@@ -30,14 +30,25 @@ def sort_files():
             # Construct the destination path
             destination_file = os.path.join(target_directory, file)
 
+            # Handle existing files in the target directory
+            while os.path.exists(destination_file):
+                # Append the current time in the format hhmm as an identifier
+                current_time = time.strftime("%H%M")
+                new_file_name = f"{file_name}_{current_time}{file_extension}"
+                
+                # If the new file name already exists, add a numeric suffix
+                count = 1
+                while os.path.exists(os.path.join(target_directory, new_file_name)):
+                    new_file_name = f"{file_name}_{current_time}({count}){file_extension}"
+                    count += 1
+                
+                destination_file = os.path.join(target_directory, new_file_name)
+
             # Move the file to the specified directory
             shutil.move(source_file, destination_file)
             response[dir_name] = response.get(dir_name, 0) + 1
 
 def output_changes():
-    if response == {}:
-        print("No files were moved.")
-        return
     for dir_name, count in response.items():
         print(f"{dir_name} moved {count} file(s)")
 
