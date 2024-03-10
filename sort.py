@@ -13,9 +13,15 @@ def sort_files():
     for file in files:
         # Check if the file is a regular file (not a directory)
         if os.path.isfile(os.path.join(current_directory, file)):
+
             # Check if the file has an extension
             file_name, file_extension = os.path.splitext(file)
-            dir_name = f"SORT {file_extension[1:].upper()}" 
+            
+            formatted_extension =  file_extension[1:].upper()
+            if formatted_extension == "IMG" or formatted_extension == "JPG" or formatted_extension == "JPEG" or formatted_extension == "PNG" or formatted_extension == "GIF" or formatted_extension == "SVG":
+                formatted_extension = "IMAGES"
+            
+            dir_name = f"SORT {formatted_extension}" 
 
             # Skip files without extension or Python files
             if file_extension == "" or file_extension == ".py": 
@@ -27,11 +33,13 @@ def sort_files():
             
             # Construct the full path to the source file
             source_file = os.path.join(current_directory, file)
+
             # Construct the destination path
             destination_file = os.path.join(target_directory, file)
 
             # Handle existing files in the target directory
             while os.path.exists(destination_file):
+
                 # Append the current time in the format hhmm as an identifier
                 current_time = time.strftime("%H%M")
                 new_file_name = f"{file_name}_{current_time}{file_extension}"
