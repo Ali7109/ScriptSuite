@@ -28,7 +28,7 @@ def sort_files():
                 continue
             
             # Specify the directory to move files
-            target_directory = os.path.join(current_directory, dir_name)
+            target_directory = os.path.join(current_directory+"/SORTED", dir_name)
             os.makedirs(target_directory, exist_ok=True)
             
             # Construct the full path to the source file
@@ -57,6 +57,9 @@ def sort_files():
             response[dir_name] = response.get(dir_name, 0) + 1
 
 def output_changes():
+    if  not response:
+        print("No files were moved")
+        return
     for dir_name, count in response.items():
         print(f"{dir_name} moved {count} file(s)")
 
